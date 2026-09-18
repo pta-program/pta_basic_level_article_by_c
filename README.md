@@ -9,7 +9,7 @@ PAT Basic Level（乙级）题目练习仓库，使用 C 语言记录题解与�
 Pages 启用并完成首次 Actions 部署后，站点地址为：
 
 ```text
-https://pta-program.github.io/pta_basic_level_practice_by_c/
+https://pta-program.github.io/pta_basic_level_article_by_c/
 ```
 
 页面提供以下功能：
