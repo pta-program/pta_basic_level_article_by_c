@@ -42,7 +42,7 @@ PATestPATestPTetPTePePee
 
 ```c
 /*
- * 题目：1043 输出 PATest
+ * 题目：1043 输出PATest
  * 实现原理：按顺序轮流输出仍有剩余的 P、A、T、e、s、t，直到全部字符耗尽。
  * 复杂度：O(L)
  * 实现步骤：

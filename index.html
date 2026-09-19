@@ -14,7 +14,19 @@
     })();
   </script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
   <style>
+    .katex {
+      font-size: 1.05em;
+    }
+    .katex-display {
+      margin: 0.75em 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+    html[data-theme='dark'] .katex {
+      color: var(--text-color);
+    }
     :root {
       --theme-color: #2f80ed;
       --body-bg: #ffffff;
@@ -225,7 +237,41 @@
         querySelector: '.mermaid',
         maxTextSize: 20000,
         maxEdges: 200
-      }
+      },
+      plugins: [
+        function (hook, vm) {
+          function renderMath() {
+            if (typeof window.renderMathInElement !== 'function') return;
+            var root = document.querySelector('.markdown-section') || document.body;
+            window.renderMathInElement(root, {
+              delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '\\[', right: '\\]', display: true },
+                { left: '$', right: '$', display: false },
+                { left: '\\(', right: '\\)', display: false }
+              ],
+              throwOnError: false,
+              errorColor: '#b00020',
+              ignoredClasses: ['no-katex'],
+              ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            });
+          }
+          hook.doneEach(function () {
+            // KaTeX scripts may still be loading on first paint
+            if (typeof window.renderMathInElement === 'function') {
+              renderMath();
+            } else {
+              var t = setInterval(function () {
+                if (typeof window.renderMathInElement === 'function') {
+                  clearInterval(t);
+                  renderMath();
+                }
+              }, 50);
+              setTimeout(function () { clearInterval(t); }, 5000);
+            }
+          });
+        }
+      ]
     };
 
     (function () {
@@ -284,5 +330,8 @@
   <script src="https://cdn.jsdelivr.net/npm/countable@3/dist/countable.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/docsify-count@1/dist/countable.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-c.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"
+    onload="window.__katexReady = true;"></script>
 </body>
 </html>
